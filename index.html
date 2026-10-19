@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#05070f">
+    <title>Cerul AR</title>
+    <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+    <video id="cam" playsinline muted autoplay></video>
+    <canvas id="sky"></canvas>
+    <div id="labels"></div>
+
+    <div id="reticle"><div class="ring"></div><div id="reticle-hint"></div></div>
+    <div id="target-arrow" hidden>➤</div>
+
+    <header id="topbar">
+        <div id="status"></div>
+        <div class="actions">
+            <button id="btn-tonight" title="Ce se vede azi">🌙</button>
+            <button id="btn-settings" title="Setări">⚙</button>
+        </div>
+    </header>
+    <div id="toast" hidden></div>
+
+    <section id="start" class="overlay">
+        <div class="card">
+            <h1>Cerul AR</h1>
+            <p>Îndreaptă telefonul spre cer și vezi constelațiile, planetele, Luna și Stația Spațială Internațională în timp real.</p>
+            <ul>
+                <li>📷 camera — imaginea cerului</li>
+                <li>📍 locația — ce stele sunt deasupra ta</li>
+                <li>🧭 senzorii de mișcare — încotro privești</li>
+            </ul>
+            <button id="btn-start" class="primary">Pornește</button>
+            <p class="small">Pe laptop: trage cu mouse-ul ca să te uiți în jur, rotița pentru zoom.</p>
+        </div>
+    </section>
+
+    <section id="info" class="sheet" hidden>
+        <button class="close" data-close="info">✕</button>
+        <div id="info-body"></div>
+    </section>
+
+    <section id="tonight" class="sheet" hidden>
+        <button class="close" data-close="tonight">✕</button>
+        <div id="tonight-body"></div>
+    </section>
+
+    <section id="settings" class="sheet" hidden>
+        <button class="close" data-close="settings">✕</button>
+        <h2>Setări</h2>
+        <label class="row"><input type="checkbox" id="opt-lines" checked> Linii constelații</label>
+        <label class="row"><input type="checkbox" id="opt-cnames" checked> Nume constelații</label>
+        <label class="row"><input type="checkbox" id="opt-snames" checked> Nume stele</label>
+        <label class="row"><input type="checkbox" id="opt-ecliptic"> Ecliptica</label>
+        <label class="row"><input type="checkbox" id="opt-camera" checked> Imaginea camerei</label>
+        <label class="slider">Stele până la magnitudinea <b id="val-mag"></b>
+            <input type="range" id="opt-mag" min="1" max="6" step="0.5" value="5"></label>
+        <label class="slider">Câmp vizual (FOV) <b id="val-fov"></b>
+            <input type="range" id="opt-fov" min="25" max="100" step="1" value="62"></label>
+        <label class="slider">Corecție busolă <b id="val-heading"></b>
+            <input type="range" id="opt-heading" min="-60" max="60" step="1" value="0"></label>
+        <label class="slider">Timp <b id="val-time"></b>
+            <input type="range" id="opt-time" min="-24" max="24" step="0.25" value="0"></label>
+        <p class="small" id="loc-info"></p>
+        <p class="small">Date stele: d3-celestial (Hipparcos). Calcule: Astronomy Engine.</p>
+    </section>
+
+    <script type="module" src="./src/main.js"></script>
+</body>
+</html>
