@@ -2,6 +2,8 @@
 
 Aplicație WebAR: îndrepți telefonul spre cer și vezi constelațiile, stelele, planetele, Luna, Soarele și ISS-ul suprapuse peste imaginea camerei. Rulează în browser pe iPhone (Safari) și Android (Chrome), fără instalare.
 
+**Online:** https://mihnea15.github.io/ar-project/ (se publică automat la fiecare push pe `main`, prin GitHub Actions)
+
 ## Rulare
 
 ```bash
