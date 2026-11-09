@@ -1,6 +1,3 @@
-// Converts the d3-celestial catalogs (https://github.com/ofrohn/d3-celestial, BSD-3)
-// into one compact file used by the app: public/data/sky.json
-// Usage: node scripts/build-sky-data.mjs <folder-with-d3-celestial-json>
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -25,7 +22,6 @@ const starNames = load('starnames.json');
 const consts = load('constellations.json').features;
 const lines = load('constellations.lines.json').features;
 
-// Stars: [ra, dec, mag, bv]; named stars point into this array by index
 const outStars = [];
 const named = [];
 for (const f of stars) {

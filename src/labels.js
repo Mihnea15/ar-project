@@ -1,4 +1,3 @@
-// HTML labels that follow sky objects on screen, plus tap picking and the "aim at" hint.
 import { Vector3 } from 'three';
 
 export class LabelLayer {
@@ -51,7 +50,6 @@ export class LabelLayer {
                 it.shown = show;
             }
             if (show) {
-                // Label width is measured once, reading layout every frame is expensive
                 if (it.w === undefined) it.w = it.el.offsetWidth;
                 const dx = it.kind === 'const' || it.kind === 'cardinal' ? -it.w / 2 : 9;
                 const dy = it.kind === 'const' || it.kind === 'cardinal' ? -8 : -18;

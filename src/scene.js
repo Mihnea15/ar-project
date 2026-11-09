@@ -1,4 +1,3 @@
-// Three.js objects for the sky: stars, constellation lines, ecliptic, horizon and solar-system bodies.
 import * as THREE from 'three';
 import { bvToColor, eqjVector } from './astro.js';
 import { BODY_INFO } from './texts.js';
@@ -146,7 +145,6 @@ export function drawMoonTexture(texture, fraction, waxing) {
     g.beginPath();
     g.arc(32, 32, r, 0, Math.PI * 2);
     g.fill();
-    // Lit half on the sunny side, then an ellipse that cuts it (crescent) or extends it (gibbous)
     g.fillStyle = '#f4f1e6';
     g.beginPath();
     g.arc(32, 32, r, -Math.PI / 2, Math.PI / 2, !waxing);
@@ -173,7 +171,6 @@ export function createBodySprites(names) {
         }
         const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map, sizeAttenuation: false, depthWrite: false, transparent: true }));
         sprite.scale.setScalar(info.size);
-        sprite.userData.baseSize = info.size;
         sprites[name] = sprite;
     }
     const iss = new THREE.Sprite(new THREE.SpriteMaterial({ map: discTexture('#6dffb0'), sizeAttenuation: false, depthWrite: false, transparent: true }));

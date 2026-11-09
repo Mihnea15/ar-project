@@ -1,4 +1,3 @@
-# Builds the app with Vite and publishes dist/ to GitHub Pages on every push to main.
 name: Deploy to GitHub Pages
 
 on:

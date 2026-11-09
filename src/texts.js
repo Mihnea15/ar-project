@@ -1,5 +1,3 @@
-// Romanian display texts: names, short descriptions and facts for the objects in the app.
-
 export const BODY_INFO = {
     Sun: {
         name: 'Soarele', color: '#ffd84d', size: 0.07,
@@ -53,7 +51,6 @@ export const ISS_INFO = {
     desc: 'Laborator locuit pe orbită la ~420 km altitudine. Face un ocol complet al Pământului în ~92 de minute și se vede ca un punct luminos care trece rapid, fără să clipească.',
 };
 
-// Romanian constellation names, keyed by IAU abbreviation
 export const CONST_RO = {
     And: 'Andromeda', Ant: 'Mașina Pneumatică', Aps: 'Pasărea Paradisului', Aqr: 'Vărsătorul', Aql: 'Vulturul',
     Ara: 'Altarul', Ari: 'Berbecul', Aur: 'Vizitiul', Boo: 'Boarul', Cae: 'Dalta', Cam: 'Girafa', Cnc: 'Racul',
@@ -73,7 +70,6 @@ export const CONST_RO = {
     Vir: 'Fecioara', Vol: 'Peștele Zburător', Vul: 'Vulpea',
 };
 
-// Short stories for the best known constellations
 export const CONST_STORY = {
     Ori: 'Vânătorul uriaș din mitologia greacă. Cele trei stele aliniate formează „Brâul lui Orion” (la noi, „Cei trei crai”).',
     UMa: 'Conține „Carul Mare”. Prelungind de 5 ori latura din spate a carului găsești Steaua Polară.',
@@ -96,7 +92,6 @@ export const CONST_STORY = {
     CMa: 'Câinele lui Orion. Conține Sirius, cea mai strălucitoare stea de pe cerul nopții.',
 };
 
-// Distances (light years) for the brightest named stars
 export const STAR_DIST = {
     Sirius: 8.6, Canopus: 310, Arcturus: 36.7, Vega: 25, Capella: 42.9, Rigel: 860, Procyon: 11.5,
     Betelgeuse: 548, Altair: 16.7, Aldebaran: 65, Antares: 550, Spica: 250, Pollux: 34, Fomalhaut: 25,

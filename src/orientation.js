@@ -1,12 +1,9 @@
-// Turns phone motion sensors (or mouse/touch drag on a laptop) into a camera orientation
-// in the scene world frame: x = East, y = Up, z = South.
 import { Euler, MathUtils, Quaternion, Vector3 } from 'three';
 
 const DEG = MathUtils.DEG2RAD;
 const Z_AXIS = new Vector3(0, 0, 1);
 const Y_AXIS = new Vector3(0, 1, 0);
 const X_AXIS = new Vector3(1, 0, 0);
-// Device frame -> camera frame: the back camera looks along the device's -Z axis
 const CAMERA_FROM_DEVICE = new Quaternion(-Math.sqrt(0.5), 0, 0, Math.sqrt(0.5));
 
 export class OrientationTracker {
@@ -15,10 +12,8 @@ export class OrientationTracker {
         this.element = element;
         this.target = new Quaternion();
         this.current = new Quaternion();
-        // 'none' | 'absolute' (Android) | 'ios' (webkitCompassHeading) | 'relative' (no compass) | 'drag'
         this.mode = 'none';
         this.manualOffset = 0;
-        // Magnetic declination (degrees, east positive): compasses point to magnetic north, the sky needs true north
         this.declination = 0;
         this.compassOffset = null;
         this.compassSettled = false;
@@ -46,7 +41,6 @@ export class OrientationTracker {
         }
         const absolute = 'ondeviceorientationabsolute' in window;
         window.addEventListener(absolute ? 'deviceorientationabsolute' : 'deviceorientation', this.onSensor);
-        // Laptops expose the event but never fire it with data, so fall back to drag
         setTimeout(() => {
             if (this.mode === 'none') this.enableDrag();
         }, 1500);
@@ -65,7 +59,6 @@ export class OrientationTracker {
         } else {
             this.mode = 'relative';
         }
-        // alpha grows counterclockwise, so an east declination is subtracted to turn magnetic north into true north
         if (this.mode !== 'relative') alpha -= this.declination;
         this.setFromEuler(alpha + this.manualOffset, e.beta, e.gamma);
     }

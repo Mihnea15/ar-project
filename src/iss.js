@@ -1,4 +1,3 @@
-// Live position of the International Space Station (NORAD 25544) from the public wheretheiss.at API.
 import { Vector3 } from 'three';
 
 const API = 'https://api.wheretheiss.at/v1/satellites/25544';
@@ -39,7 +38,6 @@ export function trackIss(onUpdate, intervalMs = 5000) {
             const res = await fetch(API);
             if (res.ok) onUpdate(await res.json());
         } catch {
-            // Offline or API down: keep the last known position
         }
     };
     poll();

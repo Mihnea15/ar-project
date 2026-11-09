@@ -1,4 +1,3 @@
-// App entry: wires the camera feed, sensors, sky scene, labels and info panels together.
 import geomagnetism from 'geomagnetism';
 import { Vector3 } from 'three';
 import {
@@ -16,7 +15,6 @@ import { BODY_INFO, CONST_RO, CONST_STORY, ISS_INFO, STAR_DIST } from './texts.j
 
 const $ = (id) => document.getElementById(id);
 
-// Bucharest is used until the GPS answers
 const state = {
     lat: 44.4268,
     lon: 26.1025,
@@ -35,7 +33,6 @@ const { renderer, scene, camera, celestial } = createScene($('sky'));
 const labels = new LabelLayer($('labels'));
 const tracker = new OrientationTracker($('sky'));
 tracker.onZoom = (k) => setFov(state.fov * k);
-// Manual mode has no AR alignment, and on a laptop the webcam would only show the user, so the feed is hidden
 tracker.onDrag = () => {
     $('cam').classList.add('off');
     $('opt-camera').checked = false;
@@ -57,7 +54,7 @@ function now() {
 
 /** Formats a Date as HH:MM in Romanian locale, or a dash when missing. */
 function hhmm(d) {
-    return d ? d.toLocaleTimeString('ro-RO', { hour: '2-digit', minute: '2-digit' }) : '—';
+    return d ? d.toLocaleTimeString('ro-RO', { hour: '2-digit', minute: '2-digit' }) : '-';
 }
 
 /** Formats a number with Romanian thousand separators. */
@@ -128,7 +125,6 @@ function updateSky(date) {
         lastMoonUpdate = date;
     }
 
-    // ISS data is always live, so it is hidden while the time slider is moved away from "now"
     const iss = sprites.ISS;
     if (state.iss && state.timeOffsetH === 0) {
         const t = issTopocentric(state.iss, state.lat, state.lon, state.height / 1000);
@@ -305,7 +301,6 @@ function updateGuide() {
         }
         return;
     }
-    // Direction in camera space: x right, y up; works for objects behind the viewer too
     const v = itemWorld(it).applyMatrix4(camera.matrixWorldInverse);
     let dx = v.x;
     let dy = -v.y;
@@ -327,7 +322,7 @@ function updateStatus() {
     const modes = { absolute: '🧭 busolă', ios: '🧭 busolă', relative: '⚠ fără busolă', drag: '🖱 mod manual', none: '…' };
     $('status').textContent = `📍 ${fmt(state.lat, 2)}°, ${fmt(state.lon, 2)}° ${state.gps ? '' : '(implicit)'} · ${modes[tracker.mode]}`;
     const decl = tracker.declination;
-    $('loc-info').textContent = `Locație: ${fmt(state.lat, 4)}°, ${fmt(state.lon, 4)}° — ${state.gps ? 'GPS' : 'implicit (București), GPS indisponibil'}`
+    $('loc-info').textContent = `Locație: ${fmt(state.lat, 4)}°, ${fmt(state.lon, 4)}°, ${state.gps ? 'GPS' : 'implicit (București), GPS indisponibil'}`
         + ` · declinație magnetică ${decl >= 0 ? '+' : ''}${fmt(decl, 1)}° (corectată automat)`;
 }
 
@@ -391,7 +386,7 @@ async function startCamera() {
     } catch {
         video.classList.add('off');
         $('opt-camera').checked = false;
-        toast('Camera nu e disponibilă — afișez doar cerul simulat.');
+        toast('Camera nu e disponibilă, afișez doar cerul simulat.');
     }
 }
 
@@ -406,7 +401,7 @@ function startGps() {
         state.observer = makeObserver(state.lat, state.lon, state.height);
         updateDeclination();
         lastSkyUpdate = 0;
-    }, () => toast('Fără GPS — folosesc locația implicită (București).'), { enableHighAccuracy: true, timeout: 15000 });
+    }, () => toast('Fără GPS, folosesc locația implicită (București).'), { enableHighAccuracy: true, timeout: 15000 });
 }
 
 /** Connects the settings panel controls to the app state. */
@@ -456,7 +451,6 @@ async function main() {
     requestAnimationFrame(frame);
 
     $('btn-start').onclick = async () => {
-        // Sensor permission must be requested first, while still inside the tap gesture (iOS)
         await tracker.start();
         $('start').hidden = true;
         startGps();

@@ -1,5 +1,3 @@
-// Astronomy helpers built on Astronomy Engine.
-// World frame used by the 3D scene: x = East, y = Up (zenith), z = South (so -z = North).
 import * as Astronomy from 'astronomy-engine';
 import { Matrix4, Vector3 } from 'three';
 
@@ -31,7 +29,6 @@ export function eqjVector(raDeg, decDeg, radius = 1) {
 export function eqjToWorldMatrix(date, observer) {
     const rot = Astronomy.Rotation_EQJ_HOR(date, observer);
     const time = Astronomy.MakeTime(date);
-    // HOR is x = north, y = west, z = zenith; convert each rotated basis vector to the scene frame
     const column = (x, y, z) => {
         const v = Astronomy.RotateVector(rot, new Astronomy.Vector(x, y, z, time));
         return new Vector3(-v.y, v.z, -v.x);
@@ -69,12 +66,6 @@ export function bodyHorizontal(body, date, observer) {
     const eq = Astronomy.Equator(body, date, observer, true, true);
     const hor = Astronomy.Horizon(date, observer, eq.ra, eq.dec, 'normal');
     return { alt: hor.altitude, az: hor.azimuth };
-}
-
-/** Altitude/azimuth (degrees) of a fixed J2000 star position at a given moment. */
-export function starHorizontal(raDeg, decDeg, date, observer) {
-    const m = eqjToWorldMatrix(date, observer);
-    return worldToHorizontal(eqjVector(raDeg, decDeg).applyMatrix4(m));
 }
 
 /** Apparent magnitude and illuminated fraction of a body (null for the Sun's phase). */
