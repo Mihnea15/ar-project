@@ -8,7 +8,7 @@ Aplicație WebAR: îndrepți telefonul spre cer și vezi constelațiile, stelele
 
 ```bash
 npm install
-npm run dev          # HTTPS pe https://<ip-laptop>:5173 (pentru telefon, aceeași rețea)
+npm run dev
 ```
 
 - Pe telefon deschide adresa „Network” afișată de Vite și acceptă avertismentul de certificat (e self-signed).
@@ -19,7 +19,7 @@ npm run dev          # HTTPS pe https://<ip-laptop>:5173 (pentru telefon, aceea�
 
 1. Pornește **Hotspot personal** pe iPhone și conectează laptopul la el.
 2. Pe Windows, rețeaua hotspot e de obicei „Publică”, iar firewall-ul blochează conexiunile spre Node. Setează rețeaua ca **Privată** (Setări → Rețea → proprietățile rețelei) sau permite `node.exe` și pe rețele publice când apare fereastra firewall-ului.
-3. `npm run dev` și deschide pe iPhone, în Safari, adresa „Network” (de forma `https://172.20.10.x:5173`).
+3. `npm run dev` și deschide pe iPhone, în Safari, adresa „Network”
 4. Acceptă avertismentul de certificat („Afișează detaliile” → „vizitează acest site”), apoi apasă „Pornește” și permite senzorii, camera și locația.
 
 ## Cum funcționează
