@@ -1,4 +1,5 @@
 // App entry: wires the camera feed, sensors, sky scene, labels and info panels together.
+import geomagnetism from 'geomagnetism';
 import { Vector3 } from 'three';
 import {
     BODIES, bodyHorizontal, bodyIllumination, bodyPosition, bvToTemperature, compassName, constellationAt,
@@ -34,6 +35,12 @@ const { renderer, scene, camera, celestial } = createScene($('sky'));
 const labels = new LabelLayer($('labels'));
 const tracker = new OrientationTracker($('sky'));
 tracker.onZoom = (k) => setFov(state.fov * k);
+// Manual mode has no AR alignment, and on a laptop the webcam would only show the user, so the feed is hidden
+tracker.onDrag = () => {
+    $('cam').classList.add('off');
+    $('opt-camera').checked = false;
+};
+updateDeclination();
 
 let stars;
 let lines;
@@ -56,6 +63,11 @@ function hhmm(d) {
 /** Formats a number with Romanian thousand separators. */
 function fmt(n, digits = 0) {
     return n.toLocaleString('ro-RO', { maximumFractionDigits: digits, minimumFractionDigits: digits });
+}
+
+/** Computes the magnetic declination for the current location (World Magnetic Model) and hands it to the tracker. */
+function updateDeclination() {
+    tracker.declination = geomagnetism.model(new Date()).point([state.lat, state.lon]).decl;
 }
 
 /** Shows a short message at the top of the screen. */
@@ -314,7 +326,9 @@ function updateHint() {
 function updateStatus() {
     const modes = { absolute: '🧭 busolă', ios: '🧭 busolă', relative: '⚠ fără busolă', drag: '🖱 mod manual', none: '…' };
     $('status').textContent = `📍 ${fmt(state.lat, 2)}°, ${fmt(state.lon, 2)}° ${state.gps ? '' : '(implicit)'} · ${modes[tracker.mode]}`;
-    $('loc-info').textContent = `Locație: ${fmt(state.lat, 4)}°, ${fmt(state.lon, 4)}° — ${state.gps ? 'GPS' : 'implicit (București), GPS indisponibil'}`;
+    const decl = tracker.declination;
+    $('loc-info').textContent = `Locație: ${fmt(state.lat, 4)}°, ${fmt(state.lon, 4)}° — ${state.gps ? 'GPS' : 'implicit (București), GPS indisponibil'}`
+        + ` · declinație magnetică ${decl >= 0 ? '+' : ''}${fmt(decl, 1)}° (corectată automat)`;
 }
 
 /** Sets the camera field of view (degrees) and scales star sizes with it. */
@@ -390,6 +404,7 @@ function startGps() {
         state.height = p.coords.altitude || 0;
         state.gps = true;
         state.observer = makeObserver(state.lat, state.lon, state.height);
+        updateDeclination();
         lastSkyUpdate = 0;
     }, () => toast('Fără GPS — folosesc locația implicită (București).'), { enableHighAccuracy: true, timeout: 15000 });
 }

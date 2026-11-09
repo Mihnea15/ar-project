@@ -13,6 +13,13 @@ npm run dev          # HTTPS pe https://<ip-laptop>:5173 (pentru telefon, aceea�
 - Pe laptop merge și cu mouse-ul: trage ca să te rotești, rotița face zoom.
 - Pentru HTTP simplu pe laptop: `NO_SSL=1 npm run dev`.
 
+### Test pe iPhone fără rețea comună (hotspot)
+
+1. Pornește **Hotspot personal** pe iPhone și conectează laptopul la el.
+2. Pe Windows, rețeaua hotspot e de obicei „Publică”, iar firewall-ul blochează conexiunile spre Node. Setează rețeaua ca **Privată** (Setări → Rețea → proprietățile rețelei) sau permite `node.exe` și pe rețele publice când apare fereastra firewall-ului.
+3. `npm run dev` și deschide pe iPhone, în Safari, adresa „Network” (de forma `https://172.20.10.x:5173`).
+4. Acceptă avertismentul de certificat („Afișează detaliile” → „vizitează acest site”), apoi apasă „Pornește” și permite senzorii, camera și locația.
+
 ## Cum funcționează
 
 1. **Locația** (GPS) și **ora** → cu [Astronomy Engine](https://github.com/cosinekitty/astronomy) se calculează rotația cerului (J2000 → orizont local) și pozițiile Soarelui, Lunii și planetelor.
@@ -44,6 +51,7 @@ Catalogul de stele și constelații vine din [d3-celestial](https://github.com/o
 | [Vite](https://vite.dev) + `@vitejs/plugin-basic-ssl` | server de dezvoltare și build; HTTPS cu certificat self-signed, pentru că telefonul dă acces la cameră și senzori doar pe HTTPS |
 | [d3-celestial](https://github.com/ofrohn/d3-celestial) | catalogul de stele (Hipparcos, până la magnitudinea 6), numele stelelor, liniile constelațiilor |
 | [api.wheretheiss.at](https://wheretheiss.at/w/developer) | poziția ISS în timp real |
+| [geomagnetism](https://github.com/naturalatlas/geomagnetism) (World Magnetic Model 2025) | declinația magnetică pentru locația ta: busola arată nordul magnetic, iar cerul are nevoie de nordul geografic (în România diferența e ≈ 6°) |
 
 API-uri ale browserului, folosite direct, fără biblioteci:
 

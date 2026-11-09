@@ -18,7 +18,10 @@ export class OrientationTracker {
         // 'none' | 'absolute' (Android) | 'ios' (webkitCompassHeading) | 'relative' (no compass) | 'drag'
         this.mode = 'none';
         this.manualOffset = 0;
+        // Magnetic declination (degrees, east positive): compasses point to magnetic north, the sky needs true north
+        this.declination = 0;
         this.compassOffset = null;
+        this.compassSettled = false;
         this.yaw = 180;
         this.pitch = 25;
         this.euler = new Euler();
@@ -62,18 +65,22 @@ export class OrientationTracker {
         } else {
             this.mode = 'relative';
         }
+        // alpha grows counterclockwise, so an east declination is subtracted to turn magnetic north into true north
+        if (this.mode !== 'relative') alpha -= this.declination;
         this.setFromEuler(alpha + this.manualOffset, e.beta, e.gamma);
     }
 
     /**
      * On iOS alpha has an arbitrary zero, so it is tied to the compass with a smoothed offset.
      * The offset is only updated outside the gimbal-lock zone (phone held straight up), where alpha jumps.
+     * If the first sample comes from that zone, the first good sample afterwards replaces it at once.
      */
     updateCompassOffset(e) {
         const sample = (360 - e.webkitCompassHeading) - e.alpha;
         const usable = e.beta > -60 && e.beta < 70 && Math.abs(e.gamma) < 30;
-        if (this.compassOffset === null) {
+        if (this.compassOffset === null || (usable && !this.compassSettled)) {
             this.compassOffset = sample;
+            this.compassSettled = usable;
         } else if (usable) {
             const diff = ((sample - this.compassOffset + 540) % 360) - 180;
             this.compassOffset += diff * 0.05;
@@ -117,6 +124,7 @@ export class OrientationTracker {
         this.element.addEventListener('wheel', (e) => {
             if (this.onZoom) this.onZoom(e.deltaY > 0 ? 1.08 : 1 / 1.08);
         }, { passive: true });
+        if (this.onDrag) this.onDrag();
     }
 
     /** Points the camera at the current yaw (azimuth) and pitch (altitude). */

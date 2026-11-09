@@ -175,6 +175,11 @@ button.primary {
     background: rgba(5, 7, 15, 0.85);
 }
 
+/* display: flex above would otherwise override the hidden attribute */
+.overlay[hidden] {
+    display: none;
+}
+
 .card {
     max-width: 380px;
     text-align: center;
