@@ -55,8 +55,8 @@ export function createStars(stars) {
             varying float vAlpha;
             void main() {
                 vColor = color;
-                vAlpha = mag > uMaxMag ? 0.0 : clamp(1.15 - (mag + 1.5) * 0.09, 0.35, 1.0);
-                gl_PointSize = mag > uMaxMag ? 0.0 : max(2.0, (6.8 - mag) * 1.25) * uPixelRatio * uZoom;
+                vAlpha = mag > uMaxMag ? 0.0 : clamp(1.3 - (mag + 1.5) * 0.09, 0.55, 1.0);
+                gl_PointSize = mag > uMaxMag ? 0.0 : max(2.5, (6.8 - mag) * 1.45) * uPixelRatio * uZoom;
                 gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
             }`,
         fragmentShader: `
@@ -83,7 +83,7 @@ export function createConstellationLines(constellations) {
         }
     }
     const geo = new THREE.BufferGeometry().setFromPoints(pts);
-    const mat = new THREE.LineBasicMaterial({ color: 0x7fa8ff, transparent: true, opacity: 0.5, depthWrite: false });
+    const mat = new THREE.LineBasicMaterial({ color: 0xa8c4ff, transparent: true, opacity: 0.85, depthWrite: false });
     return new THREE.LineSegments(geo, mat);
 }
 

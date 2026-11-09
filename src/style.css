@@ -57,7 +57,7 @@ html, body {
 }
 
 .lbl.star { color: #fff6d8; }
-.lbl.const { color: #8fb4ff; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; }
+.lbl.const { color: #b4cdff; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
 .lbl.body { color: var(--accent); font-weight: 600; font-size: 13px; }
 .lbl.iss { color: #6dffb0; font-weight: 600; }
 .lbl.cardinal { color: #ff8a7a; font-weight: 700; font-size: 16px; }
